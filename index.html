@@ -345,7 +345,6 @@
   }
 
   function formatDate(iso){
-    if(!iso) return "Não informada";
     var p = iso.split("-");
     return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
   }
@@ -362,29 +361,20 @@
         unidade = elUnidade.value.trim(), data = elData.value, desc = elDesc.value.trim();
 
     if(!nome || !tel || !desc){
-      showError("Preencha nome, telefone e a descrição da manifestação.");
+      showError("Preencha nome, telefone e descrição.");
       return;
     }
 
     // Mantém o mesmo protocolo enquanto o formulário não for limpo
     if(!protocol) protocol = generateProtocol();
 
-    var subject = "[" + protocol + "] Reclamação - " + nome + " - CSI Saúde";
-    builtBody = [
-      "PROTOCOLO: " + protocol,
-      "",
-      "Nome completo: " + nome,
-      "Telefone/WhatsApp: " + tel,
-      "E-mail para contato: " + (email || "Não informado"),
-      "Unidade da CSI: " + (unidade || "Não informada"),
-      "Data do ocorrido: " + formatDate(data),
-      "",
-      "Descrição da reclamação:",
-      desc,
-      "",
-      "--- Enviado via canal de ouvidoria da CSI Saúde ---",
-      "Guarde o protocolo " + protocol + " para consultar sua manifestação."
-    ].join("\n");
+    var subject = "Ouvidoria CSI - Protocolo " + protocol;
+    var lines = ["Protocolo: " + protocol, "", "Nome: " + nome, "Telefone: " + tel];
+    if(email) lines.push("E-mail: " + email);
+    if(unidade) lines.push("Unidade: " + unidade);
+    if(data) lines.push("Data do ocorrido: " + formatDate(data));
+    lines.push("", "Mensagem:", desc);
+    builtBody = lines.join("\n");
 
     builtMailto = "mailto:" + MAILTO_ADDRESS +
       "?subject=" + encodeURIComponent(subject) +
