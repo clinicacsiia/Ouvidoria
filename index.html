@@ -215,10 +215,10 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <label for="f-unidade" class="form-label">Unidade da CSI <span class="text-secondary fw-normal">(opcional)</span></label>
+                <label for="f-unidade" class="form-label">Local <span class="text-secondary fw-normal">(opcional)</span></label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                  <input type="text" id="f-unidade" class="form-control" placeholder="Ex.: Matriz, Filial, Pituba">
+                  <input type="text" id="f-unidade" class="form-control">
                 </div>
               </div>
               <div class="col-md-6">
@@ -237,7 +237,7 @@
             <div class="alert alert-danger d-none mt-3 mb-0" id="form-error" role="alert"></div>
 
             <div class="d-flex flex-wrap gap-2 mt-4">
-              <button class="btn btn-csi" id="btn-build" type="button"><i class="bi bi-magic me-2"></i>Gerar protocolo e e-mail</button>
+              <button class="btn btn-csi" id="btn-build" type="button"><i class="bi bi-magic me-2"></i>Gerar protocolo e enviar</button>
               <button class="btn btn-outline-secondary" id="btn-clear" type="button"><i class="bi bi-arrow-counterclockwise me-2"></i>Limpar</button>
             </div>
           </form>
@@ -261,7 +261,6 @@
             <div class="preview mb-3" id="email-preview"></div>
 
             <div class="d-flex flex-wrap gap-2">
-              <button class="btn btn-csi" id="btn-mailto" type="button"><i class="bi bi-send me-2"></i>Abrir no aplicativo de e-mail</button>
               <button class="btn btn-outline-csi" id="btn-copy" type="button"><i class="bi bi-clipboard-check me-2"></i>Copiar texto</button>
             </div>
             <p class="text-success fw-semibold small mt-3 mb-0" id="send-status" role="status"></p>
@@ -371,7 +370,7 @@
     var subject = "Ouvidoria CSI - Protocolo " + protocol;
     var lines = ["Protocolo: " + protocol, "", "Nome: " + nome, "Telefone: " + tel];
     if(email) lines.push("E-mail: " + email);
-    if(unidade) lines.push("Unidade: " + unidade);
+    if(unidade) lines.push("Local: " + unidade);
     if(data) lines.push("Data do ocorrido: " + formatDate(data));
     lines.push("", "Mensagem:", desc);
     builtBody = lines.join("\n");
@@ -382,9 +381,9 @@
 
     protocolBox.textContent = protocol;
     previewBox.textContent = "Para: " + MAILTO_ADDRESS + "\nAssunto: " + subject + "\n\n" + builtBody;
-    sendStatus.textContent = "";
     result.hidden = false;
-    result.scrollIntoView({behavior: "smooth", block: "start"});
+    sendStatus.textContent = "Abrindo seu aplicativo de e-mail… Lembre-se de anotar o protocolo " + protocol + ".";
+    window.location.href = builtMailto;
   }
 
   function copyText(text, statusEl, okMessage){
@@ -418,12 +417,6 @@
     formError.classList.add("d-none");
     result.hidden = true;
     sendStatus.textContent = "";
-  });
-
-  $("btn-mailto").addEventListener("click", function(){
-    if(!builtMailto) return;
-    window.location.href = builtMailto;
-    sendStatus.textContent = "Abrindo seu aplicativo de e-mail… Lembre-se de anotar o protocolo " + protocol + ".";
   });
 
   $("btn-copy").addEventListener("click", function(){
