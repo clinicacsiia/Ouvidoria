@@ -1,0 +1,514 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Canal de Ouvidoria CSI</title>
+<style>
+  /*
+    Layout: single scrolling column, one form panel,
+    max-width ~720px, centered.
+  */
+  :root{
+    --bg:#FFFFFF;
+    --surface:#FFFFFF;
+    --surface-2:#E6F4FB;
+    --fg:#595959;
+    --ink:#00507A;
+    --muted:#7D7D7D;
+    --accent:#008BD3;
+    --accent-ink:#00507A;
+    --accent-fg:#FFFFFF;
+    --border:#E4E4E4;
+    --danger:#B3261E;
+    --success:#1C7A4D;
+    --font-display:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+    --font-body:'Roboto',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#06212E;
+      --surface:#0B2E3D;
+      --surface-2:#0F3A4D;
+      --fg:#D9ECF4;
+      --ink:#CFEBFA;
+      --muted:#93BBCC;
+      --accent:#3DB2EC;
+      --accent-ink:#D9ECF4;
+      --accent-fg:#06212E;
+      --border:#17465A;
+      --danger:#FF9080;
+      --success:#4ADE98;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#06212E;
+    --surface:#0B2E3D;
+    --surface-2:#0F3A4D;
+    --fg:#D9ECF4;
+    --ink:#CFEBFA;
+    --muted:#93BBCC;
+    --accent:#3DB2EC;
+    --accent-ink:#D9ECF4;
+    --accent-fg:#06212E;
+    --border:#17465A;
+    --danger:#FF9080;
+    --success:#4ADE98;
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:var(--font-body);
+    line-height:1.5;
+    padding-left:max(16px, env(safe-area-inset-left, 0px));
+    padding-right:max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding-block:40px 64px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+  }
+  header.hero{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .eyebrow{
+    font-family:var(--font-display);
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(26px,4.2vw,34px);
+    line-height:1.15;
+    margin:0;
+    color:var(--accent);
+    text-wrap:balance;
+    letter-spacing:-.01em;
+  }
+  .lede{
+    color:var(--fg);
+    font-size:15.5px;
+    max-width:60ch;
+  }
+  .lede strong{color:var(--ink);}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .card h2{
+    font-family:var(--font-display);
+    font-size:17px;
+    font-weight:600;
+    color:var(--ink);
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .card h2 svg{flex:none;}
+  .card p.hint{
+    color:var(--muted);
+    font-size:13.5px;
+    margin:-8px 0 0;
+  }
+
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .field label{
+    font-family:var(--font-display);
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .field label .opt{
+    font-weight:400;
+    color:var(--muted);
+  }
+  .row2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:480px){
+    .row2{grid-template-columns:1fr;}
+  }
+  input[type="text"],input[type="tel"],input[type="email"],input[type="date"],textarea,select{
+    font-family:var(--font-body);
+    font-size:14.5px;
+    color:var(--fg);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 12px;
+    width:100%;
+    min-width:0;
+  }
+  textarea{resize:vertical;min-height:96px;}
+  input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+  }
+  .error-msg{
+    font-size:12.5px;
+    color:var(--danger);
+    min-height:1em;
+  }
+
+  .btn{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    border-radius:14px;
+    padding:12px 20px;
+    border:1px solid transparent;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:transform .08s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(.98);}
+  .btn-primary{background:var(--accent);color:var(--accent-fg);}
+  .btn-primary:disabled{opacity:.45;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--border);}
+  .btn-ghost:hover{background:var(--surface-2);}
+  .btn-row{display:flex;flex-wrap:wrap;gap:10px;}
+
+  .status{
+    font-size:13px;
+    min-height:1.2em;
+    color:var(--success);
+    font-weight:600;
+  }
+
+  .preview{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    font-family:var(--font-body);
+    font-size:13px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    color:var(--muted);
+    max-height:260px;
+    overflow-y:auto;
+  }
+  .preview.filled{color:var(--fg);}
+
+  .addr-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--font-body);
+    font-weight:500;
+    font-size:13.5px;
+    color:var(--ink);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:6px 8px 6px 14px;
+    width:fit-content;
+  }
+  .addr-chip button{
+    font-family:var(--font-display);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    background:var(--accent);
+    color:var(--accent-fg);
+    border:none;
+    border-radius:999px;
+    padding:5px 11px;
+    cursor:pointer;
+  }
+
+  details.notes{
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:14px 18px;
+  }
+  details.notes summary{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+    color:var(--muted);
+  }
+  details.notes ul{
+    margin:12px 0 0;
+    padding-left:18px;
+    color:var(--muted);
+    font-size:13px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  details.notes li strong{color:var(--ink);}
+
+  footer{
+    background:var(--accent);
+    color:var(--accent-fg);
+    border-radius:20px;
+    padding:22px 24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    text-align:center;
+  }
+  footer .foot-name{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.01em;
+  }
+  footer .foot-contact{
+    font-size:13px;
+    opacity:.92;
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400;500&display=swap">
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">Ouvidoria · CSI Saúde</span>
+    <h1>Registrar uma reclamação sobre a CSI</h1>
+    <p class="lede">Protótipo de uma página única (HTML/CSS/JS) para coletar uma reclamação e os dados de contato da pessoa, e encaminhar tudo por e-mail para <strong>ouvidoria@csisaude.com.br</strong>.</p>
+  </header>
+
+  <section class="card" aria-labelledby="form-title">
+    <h2 id="form-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6M9 9h1"/></svg>
+      Formulário da reclamação
+    </h2>
+    <p class="hint">Campos marcados com * são obrigatórios. Nenhum dado é enviado a um servidor — tudo é montado localmente e aberto no aplicativo de e-mail da pessoa.</p>
+
+    <div class="row2">
+      <div class="field">
+        <label for="f-nome">Nome completo *</label>
+        <input type="text" id="f-nome" autocomplete="name" placeholder="Ex.: Maria Oliveira">
+      </div>
+      <div class="field">
+        <label for="f-tel">Telefone / WhatsApp *</label>
+        <input type="tel" id="f-tel" autocomplete="tel" placeholder="(71) 9____-____">
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label for="f-email">E-mail <span class="opt">(opcional)</span></label>
+        <input type="email" id="f-email" autocomplete="email" placeholder="voce@exemplo.com">
+      </div>
+      <div class="field">
+        <label for="f-unidade">Unidade da CSI <span class="opt">(opcional)</span></label>
+        <input type="text" id="f-unidade" placeholder="Ex.: Matriz, Filial, Pituba">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="f-data">Data do ocorrido <span class="opt">(opcional)</span></label>
+      <input type="date" id="f-data">
+    </div>
+
+    <div class="field">
+      <label for="f-desc">Descrição da reclamação *</label>
+      <textarea id="f-desc" placeholder="Descreva o que aconteceu, com o máximo de detalhes possível (data, local, pessoas envolvidas, etc.)."></textarea>
+    </div>
+
+    <p class="error-msg" id="form-error" role="alert"></p>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-build" type="button">Montar e-mail da reclamação</button>
+      <button class="btn btn-ghost" id="btn-clear" type="button">Limpar formulário</button>
+    </div>
+
+    <div class="field" id="preview-wrap" hidden>
+      <label>Prévia do e-mail que será enviado para ouvidoria@csisaude.com.br</label>
+      <div class="preview" id="email-preview"></div>
+      <div class="btn-row" style="margin-top:4px;">
+        <button class="btn btn-primary" id="btn-mailto" type="button">Abrir no aplicativo de e-mail</button>
+        <button class="btn btn-ghost" id="btn-copy" type="button">Copiar texto da reclamação</button>
+      </div>
+      <p class="status" id="send-status"></p>
+      <p class="hint" style="margin-top:0;">Se o e-mail não abrir automaticamente, copie o texto acima e cole em um e-mail novo endereçado a <strong style="color:var(--fg);">ouvidoria@csisaude.com.br</strong>.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+      Endereço da ouvidoria
+    </h2>
+    <div class="addr-chip">
+      ouvidoria@csisaude.com.br
+      <button type="button" id="btn-copy-addr">Copiar</button>
+    </div>
+  </section>
+
+  <details class="notes">
+    <summary>Sobre este protótipo e próximos passos</summary>
+    <ul>
+      <li><strong>É só front-end.</strong> Nada aqui é enviado a um servidor; o botão de e-mail apenas abre o aplicativo de e-mail já instalado no dispositivo da pessoa, via link <code>mailto:</code>.</li>
+      <li><strong>Limite do mailto.</strong> Em computadores sem um aplicativo de e-mail padrão configurado, o botão pode não abrir nada — por isso existe o botão de copiar o texto como alternativa.</li>
+      <li><strong>Para garantir entrega</strong> mesmo sem e-mail configurado no dispositivo, o próximo passo seria um pequeno backend (ex.: função serverless) que recebe o formulário e envia o e-mail pelo servidor.</li>
+    </ul>
+  </details>
+
+  <footer>
+    <span class="foot-name">CSI · Clínica de Saúde e Imagem</span>
+    <span class="foot-contact">WhatsApp (71) 99980-3806 · Telefone (71) 3181-7666</span>
+    <span class="foot-contact">Canal de ouvidoria — protótipo interno, não substitui os canais oficiais de atendimento.</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var MAILTO_ADDRESS = "ouvidoria@csisaude.com.br";
+
+  // ---- Complaint form ----
+  var elNome = document.getElementById("f-nome");
+  var elTel = document.getElementById("f-tel");
+  var elEmail = document.getElementById("f-email");
+  var elUnidade = document.getElementById("f-unidade");
+  var elData = document.getElementById("f-data");
+  var elDesc = document.getElementById("f-desc");
+  var formError = document.getElementById("form-error");
+  var previewWrap = document.getElementById("preview-wrap");
+  var previewBox = document.getElementById("email-preview");
+  var sendStatus = document.getElementById("send-status");
+
+  var builtMailto = "";
+  var builtBody = "";
+
+  function formatDate(iso){
+    if(!iso) return "Não informada";
+    var parts = iso.split("-");
+    if(parts.length !== 3) return iso;
+    return parts[2] + "/" + parts[1] + "/" + parts[0];
+  }
+
+  function buildEmail(){
+    formError.textContent = "";
+    var nome = elNome.value.trim();
+    var tel = elTel.value.trim();
+    var email = elEmail.value.trim();
+    var unidade = elUnidade.value.trim();
+    var data = elData.value;
+    var desc = elDesc.value.trim();
+
+    if(!nome || !tel || !desc){
+      formError.textContent = "Preencha nome, telefone e a descrição da reclamação.";
+      previewWrap.hidden = true;
+      return;
+    }
+
+    var subject = "Reclamação - " + nome + " - CSI Saúde";
+    var bodyLines = [
+      "Nome completo: " + nome,
+      "Telefone/WhatsApp: " + tel,
+      "E-mail para contato: " + (email || "Não informado"),
+      "Unidade da CSI: " + (unidade || "Não informada"),
+      "Data do ocorrido: " + formatDate(data),
+      "",
+      "Descrição da reclamação:",
+      desc,
+      "",
+      "--- Enviado via canal de ouvidoria da CSI Saúde ---"
+    ];
+    builtBody = bodyLines.join("\n");
+    builtMailto = "mailto:" + MAILTO_ADDRESS +
+      "?subject=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(builtBody);
+
+    previewBox.textContent = "Para: " + MAILTO_ADDRESS + "\nAssunto: " + subject + "\n\n" + builtBody;
+    previewBox.classList.add("filled");
+    previewWrap.hidden = false;
+    sendStatus.textContent = "";
+  }
+
+  document.getElementById("btn-build").addEventListener("click", buildEmail);
+
+  document.getElementById("btn-clear").addEventListener("click", function(){
+    elNome.value = ""; elTel.value = ""; elEmail.value = "";
+    elUnidade.value = ""; elData.value = ""; elDesc.value = "";
+    formError.textContent = "";
+    previewWrap.hidden = true;
+    sendStatus.textContent = "";
+  });
+
+  document.getElementById("btn-mailto").addEventListener("click", function(){
+    if(!builtMailto) return;
+    window.location.href = builtMailto;
+    sendStatus.textContent = "Abrindo seu aplicativo de e-mail…";
+  });
+
+  function copyText(text, statusEl, okMessage){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        statusEl.textContent = okMessage;
+      }).catch(function(){
+        fallbackCopy(text, statusEl, okMessage);
+      });
+    }else{
+      fallbackCopy(text, statusEl, okMessage);
+    }
+  }
+
+  function fallbackCopy(text, statusEl, okMessage){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      statusEl.textContent = okMessage;
+    }catch(e){
+      statusEl.textContent = "Não foi possível copiar automaticamente. Selecione o texto manualmente.";
+    }
+  }
+
+  document.getElementById("btn-copy").addEventListener("click", function(){
+    if(!builtBody) return;
+    copyText(builtBody, sendStatus, "Texto copiado — cole no seu e-mail.");
+  });
+
+  document.getElementById("btn-copy-addr").addEventListener("click", function(){
+    copyText(MAILTO_ADDRESS, sendStatus, "Endereço copiado.");
+  });
+})();
+</script>
+
+</body></html>
