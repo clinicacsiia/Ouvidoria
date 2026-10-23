@@ -1,392 +1,321 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<meta name="claude:viewport-fit-sides" content="cover">
-<title>Canal de Ouvidoria CSI</title>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ouvidoria CSI Saúde</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
 <style>
-  /*
-    Layout: single scrolling column, one form panel,
-    max-width ~720px, centered.
-  */
   :root{
-    --bg:#FFFFFF;
-    --surface:#FFFFFF;
-    --surface-2:#E6F4FB;
-    --fg:#595959;
-    --ink:#00507A;
-    --muted:#7D7D7D;
-    --accent:#008BD3;
-    --accent-ink:#00507A;
-    --accent-fg:#FFFFFF;
-    --border:#E4E4E4;
-    --danger:#B3261E;
-    --success:#1C7A4D;
-    --font-display:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
-    --font-body:'Roboto',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
-    color-scheme:light;
+    --csi-blue:#008BD3;
+    --csi-deep:#00507A;
+    --csi-night:#06212E;
+    --csi-soft:#E6F4FB;
+    --csi-mint:#2EC4B6;
+    --bs-primary:#008BD3;
+    --bs-primary-rgb:0,139,211;
+    --bs-link-color:#008BD3;
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#06212E;
-      --surface:#0B2E3D;
-      --surface-2:#0F3A4D;
-      --fg:#D9ECF4;
-      --ink:#CFEBFA;
-      --muted:#93BBCC;
-      --accent:#3DB2EC;
-      --accent-ink:#D9ECF4;
-      --accent-fg:#06212E;
-      --border:#17465A;
-      --danger:#FF9080;
-      --success:#4ADE98;
-      color-scheme:dark;
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#06212E;
-    --surface:#0B2E3D;
-    --surface-2:#0F3A4D;
-    --fg:#D9ECF4;
-    --ink:#CFEBFA;
-    --muted:#93BBCC;
-    --accent:#3DB2EC;
-    --accent-ink:#D9ECF4;
-    --accent-fg:#06212E;
-    --border:#17465A;
-    --danger:#FF9080;
-    --success:#4ADE98;
-    color-scheme:dark;
-  }
-
-  *{box-sizing:border-box;}
   body{
-    background:var(--bg);
-    color:var(--fg);
-    font-family:var(--font-body);
-    line-height:1.5;
-    padding-left:max(16px, env(safe-area-inset-left, 0px));
-    padding-right:max(16px, env(safe-area-inset-right, 0px));
+    font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+    background:linear-gradient(180deg,#f3fafe 0%,#ffffff 60%);
+    color:#3d4a52;
+    min-height:100vh;
   }
-  .wrap{
-    max-width:720px;
-    margin:0 auto;
-    padding-block:40px 64px;
-    display:flex;
-    flex-direction:column;
-    gap:28px;
+  /* Hero */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+    background:linear-gradient(135deg,var(--csi-night) 0%,var(--csi-deep) 55%,var(--csi-blue) 100%);
+    padding:64px 0 120px;
   }
-  header.hero{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+  .hero::before,.hero::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(46,196,182,.35),transparent 70%);
   }
-  .eyebrow{
-    font-family:var(--font-display);
-    font-size:12.5px;
-    font-weight:600;
-    letter-spacing:.09em;
-    text-transform:uppercase;
-    color:var(--accent);
-  }
-  h1{
-    font-family:var(--font-display);
-    font-weight:700;
-    font-size:clamp(26px,4.2vw,34px);
-    line-height:1.15;
-    margin:0;
-    color:var(--accent);
-    text-wrap:balance;
-    letter-spacing:-.01em;
-  }
-  .lede{
-    color:var(--fg);
-    font-size:15.5px;
-    max-width:60ch;
-  }
-  .lede strong{color:var(--ink);}
-
-  .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:24px;
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-  }
-  .card h2{
-    font-family:var(--font-display);
-    font-size:17px;
-    font-weight:600;
-    color:var(--ink);
-    margin:0;
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .card h2 svg{flex:none;}
-  .card p.hint{
-    color:var(--muted);
-    font-size:13.5px;
-    margin:-8px 0 0;
-  }
-
-  .field{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-  .field label{
-    font-family:var(--font-display);
-    font-size:13px;
-    font-weight:600;
-    color:var(--ink);
-  }
-  .field label .opt{
-    font-weight:400;
-    color:var(--muted);
-  }
-  .row2{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-  }
-  @media (max-width:480px){
-    .row2{grid-template-columns:1fr;}
-  }
-  input[type="text"],input[type="tel"],input[type="email"],input[type="date"],textarea,select{
-    font-family:var(--font-body);
-    font-size:14.5px;
-    color:var(--fg);
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:10px 12px;
-    width:100%;
-    min-width:0;
-  }
-  textarea{resize:vertical;min-height:96px;}
-  input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{
-    outline:2px solid var(--accent);
-    outline-offset:2px;
-  }
-  .error-msg{
-    font-size:12.5px;
-    color:var(--danger);
-    min-height:1em;
-  }
-
-  .btn{
-    font-family:var(--font-display);
-    font-weight:600;
-    font-size:13px;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-    border-radius:14px;
-    padding:12px 20px;
-    border:1px solid transparent;
-    cursor:pointer;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    transition:transform .08s ease, opacity .15s ease;
-  }
-  .btn:active{transform:scale(.98);}
-  .btn-primary{background:var(--accent);color:var(--accent-fg);}
-  .btn-primary:disabled{opacity:.45;cursor:not-allowed;}
-  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--border);}
-  .btn-ghost:hover{background:var(--surface-2);}
-  .btn-row{display:flex;flex-wrap:wrap;gap:10px;}
-
-  .status{
-    font-size:13px;
-    min-height:1.2em;
-    color:var(--success);
-    font-weight:600;
-  }
-
-  .preview{
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px;
-    font-family:var(--font-body);
-    font-size:13px;
-    white-space:pre-wrap;
-    word-break:break-word;
-    color:var(--muted);
-    max-height:260px;
-    overflow-y:auto;
-  }
-  .preview.filled{color:var(--fg);}
-
-  .addr-chip{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    font-family:var(--font-body);
+  .hero::before{width:420px;height:420px;top:-140px;right:-100px;}
+  .hero::after{width:320px;height:320px;bottom:-160px;left:-80px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);}
+  .hero .container{position:relative;z-index:1;}
+  .hero h1{font-weight:700;letter-spacing:-.01em;text-wrap:balance;}
+  .hero .lead{opacity:.92;max-width:56ch;}
+  .badge-soft{
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(6px);
     font-weight:500;
-    font-size:13.5px;
-    color:var(--ink);
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-radius:999px;
-    padding:6px 8px 6px 14px;
-    width:fit-content;
+    letter-spacing:.04em;
   }
-  .addr-chip button{
-    font-family:var(--font-display);
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:.03em;
-    text-transform:uppercase;
-    background:var(--accent);
-    color:var(--accent-fg);
-    border:none;
-    border-radius:999px;
-    padding:5px 11px;
-    cursor:pointer;
+  .hero-step{
+    display:flex;align-items:center;gap:.6rem;
+    font-size:.9rem;opacity:.95;
+  }
+  .hero-step i{
+    width:34px;height:34px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.16);
   }
 
-  details.notes{
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:14px 18px;
+  /* Cards */
+  .main-pull{margin-top:-80px;position:relative;z-index:2;}
+  .card-csi{
+    border:0;
+    border-radius:1.5rem;
+    box-shadow:0 18px 50px -18px rgba(0,80,122,.35);
   }
-  details.notes summary{
-    font-family:var(--font-display);
-    font-weight:600;
-    font-size:13.5px;
-    cursor:pointer;
-    color:var(--muted);
+  .card-csi .card-header-csi{
+    background:var(--csi-soft);
+    border-top-left-radius:1.5rem;
+    border-top-right-radius:1.5rem;
+    padding:1.25rem 1.75rem;
+    color:var(--csi-deep);
   }
-  details.notes ul{
-    margin:12px 0 0;
-    padding-left:18px;
-    color:var(--muted);
-    font-size:13px;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
+  .icon-bubble{
+    width:44px;height:44px;border-radius:14px;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--csi-blue),var(--csi-mint));
+    color:#fff;font-size:1.25rem;flex:none;
   }
-  details.notes li strong{color:var(--ink);}
+  .form-label{font-weight:600;color:var(--csi-deep);font-size:.85rem;}
+  .form-control,.form-select{
+    border-radius:.85rem;
+    border:1px solid #d6e6ee;
+    background:#f8fcfe;
+    padding:.7rem .9rem;
+  }
+  .form-control:focus,.form-select:focus{
+    border-color:var(--csi-blue);
+    box-shadow:0 0 0 .25rem rgba(0,139,211,.18);
+    background:#fff;
+  }
+  .input-group-text{
+    border-radius:.85rem 0 0 .85rem;
+    border:1px solid #d6e6ee;
+    background:var(--csi-soft);
+    color:var(--csi-blue);
+  }
+  .input-group .form-control{border-radius:0 .85rem .85rem 0;}
+  .btn{border-radius:.9rem;font-weight:600;padding:.7rem 1.4rem;}
+  .btn-csi{
+    background:linear-gradient(135deg,var(--csi-blue),#00a3e0);
+    border:0;color:#fff;
+    box-shadow:0 10px 24px -10px rgba(0,139,211,.8);
+    transition:transform .12s ease,box-shadow .12s ease;
+  }
+  .btn-csi:hover{color:#fff;transform:translateY(-1px);box-shadow:0 14px 28px -10px rgba(0,139,211,.9);}
+  .btn-csi:active{transform:scale(.98);}
+  .btn-outline-csi{border:1px solid var(--csi-blue);color:var(--csi-blue);background:transparent;}
+  .btn-outline-csi:hover{background:var(--csi-blue);color:#fff;}
 
-  footer{
-    background:var(--accent);
-    color:var(--accent-fg);
-    border-radius:20px;
-    padding:22px 24px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
+  /* Protocol */
+  .protocol-box{
+    border-radius:1.25rem;
+    background:linear-gradient(135deg,#eafaf8,var(--csi-soft));
+    border:2px dashed var(--csi-mint);
+    padding:1.25rem 1.5rem;
     text-align:center;
   }
-  footer .foot-name{
-    font-family:var(--font-display);
+  .protocol-number{
+    font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace;
+    font-size:clamp(1.4rem,5vw,2rem);
     font-weight:700;
-    font-size:15px;
-    letter-spacing:.01em;
+    letter-spacing:.06em;
+    color:var(--csi-deep);
+    user-select:all;
+    word-break:break-all;
   }
-  footer .foot-contact{
-    font-size:13px;
-    opacity:.92;
+  .preview{
+    background:#f3f8fb;
+    border:1px solid #d6e6ee;
+    border-radius:1rem;
+    padding:1rem;
+    font-size:.85rem;
+    white-space:pre-wrap;
+    word-break:break-word;
+    max-height:280px;
+    overflow-y:auto;
+    color:#3d4a52;
   }
+
+  .care-item{
+    display:flex;gap:.9rem;align-items:flex-start;
+  }
+  .care-item .icon-bubble{width:40px;height:40px;font-size:1.1rem;}
+
+  footer.site-footer{
+    background:linear-gradient(135deg,var(--csi-night),var(--csi-deep));
+    color:#d9ecf4;
+    border-top-left-radius:2rem;
+    border-top-right-radius:2rem;
+  }
+  footer.site-footer a{color:#fff;text-decoration:none;}
+  footer.site-footer a:hover{text-decoration:underline;}
+  .fade-in{animation:fadeIn .45s ease both;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.fade-in{animation:none;}.btn-csi{transition:none;}}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400;500&display=swap">
+</head>
+<body>
 
-<div class="wrap">
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <span class="badge badge-soft rounded-pill px-3 py-2 mb-3 text-uppercase">
+      <i class="bi bi-heart-pulse-fill me-1"></i> Ouvidoria · CSI Saúde
+    </span>
+    <h1 class="display-5 mb-3">Sua voz importa.<br>Estamos aqui para ouvir você.</h1>
+    <p class="lead mb-4">Conte o que aconteceu com calma e sem burocracia. Cada manifestação recebe um <strong>número de protocolo</strong> para você acompanhar sua solicitação com facilidade.</p>
+    <div class="d-flex flex-wrap gap-4">
+      <div class="hero-step"><i class="bi bi-pencil-square"></i> 1. Preencha o formulário</div>
+      <div class="hero-step"><i class="bi bi-hash"></i> 2. Receba seu protocolo</div>
+      <div class="hero-step"><i class="bi bi-envelope-check"></i> 3. Envie por e-mail</div>
+    </div>
+  </div>
+</header>
 
-  <header class="hero">
-    <span class="eyebrow">Ouvidoria · CSI Saúde</span>
-    <h1>Registrar uma reclamação sobre a CSI</h1>
-    <p class="lede">Protótipo de uma página única (HTML/CSS/JS) para coletar uma reclamação e os dados de contato da pessoa, e encaminhar tudo por e-mail para <strong>ouvidoria@csisaude.com.br</strong>.</p>
-  </header>
+<main class="container main-pull pb-5">
+  <div class="row g-4">
 
-  <section class="card" aria-labelledby="form-title">
-    <h2 id="form-title">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6M9 9h1"/></svg>
-      Formulário da reclamação
-    </h2>
-    <p class="hint">Campos marcados com * são obrigatórios. Nenhum dado é enviado a um servidor — tudo é montado localmente e aberto no aplicativo de e-mail da pessoa.</p>
+    <!-- FORM -->
+    <div class="col-lg-8">
+      <section class="card card-csi" aria-labelledby="form-title">
+        <div class="card-header-csi d-flex align-items-center gap-3">
+          <span class="icon-bubble"><i class="bi bi-chat-heart"></i></span>
+          <div>
+            <h2 class="h5 mb-0 fw-bold" id="form-title">Registrar manifestação</h2>
+            <small class="text-secondary">Campos com * são obrigatórios</small>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <form id="complaint-form" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="f-nome" class="form-label">Nome completo *</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" id="f-nome" class="form-control" autocomplete="name" placeholder="Ex.: Maria Oliveira">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="f-tel" class="form-label">Telefone / WhatsApp *</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-whatsapp"></i></span>
+                  <input type="tel" id="f-tel" class="form-control" autocomplete="tel" placeholder="(71) 9____-____">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="f-email" class="form-label">E-mail <span class="text-secondary fw-normal">(opcional)</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" id="f-email" class="form-control" autocomplete="email" placeholder="voce@exemplo.com">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="f-unidade" class="form-label">Unidade da CSI <span class="text-secondary fw-normal">(opcional)</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                  <input type="text" id="f-unidade" class="form-control" placeholder="Ex.: Matriz, Filial, Pituba">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="f-data" class="form-label">Data do ocorrido <span class="text-secondary fw-normal">(opcional)</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                  <input type="date" id="f-data" class="form-control">
+                </div>
+              </div>
+              <div class="col-12">
+                <label for="f-desc" class="form-label">Descrição *</label>
+                <textarea id="f-desc" class="form-control" rows="5" placeholder="Descreva o que aconteceu com o máximo de detalhes possível (data, local, pessoas envolvidas, etc.)."></textarea>
+              </div>
+            </div>
 
-    <div class="row2">
-      <div class="field">
-        <label for="f-nome">Nome completo *</label>
-        <input type="text" id="f-nome" autocomplete="name" placeholder="Ex.: Maria Oliveira">
-      </div>
-      <div class="field">
-        <label for="f-tel">Telefone / WhatsApp *</label>
-        <input type="tel" id="f-tel" autocomplete="tel" placeholder="(71) 9____-____">
-      </div>
+            <div class="alert alert-danger d-none mt-3 mb-0" id="form-error" role="alert"></div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+              <button class="btn btn-csi" id="btn-build" type="button"><i class="bi bi-magic me-2"></i>Gerar protocolo e e-mail</button>
+              <button class="btn btn-outline-secondary" id="btn-clear" type="button"><i class="bi bi-arrow-counterclockwise me-2"></i>Limpar</button>
+            </div>
+          </form>
+
+          <!-- Result -->
+          <div id="result" class="mt-4 fade-in" hidden>
+            <hr class="my-4">
+            <div class="protocol-box mb-3">
+              <div class="text-uppercase small fw-semibold text-secondary mb-1">
+                <i class="bi bi-bookmark-star-fill text-success me-1"></i> Seu número de protocolo
+              </div>
+              <div class="protocol-number" id="protocol-number" aria-live="polite"></div>
+              <p class="small mb-3 mt-2 text-secondary">
+                <strong>Anote este número!</strong> Ele seguirá junto com a sua mensagem no e-mail.
+                Se precisar encontrar o e-mail depois, basta informar o protocolo.
+              </p>
+              <button class="btn btn-sm btn-outline-csi" id="btn-copy-protocol" type="button"><i class="bi bi-clipboard me-1"></i>Copiar protocolo</button>
+            </div>
+
+            <label class="form-label">Prévia do e-mail para <span class="text-nowrap">ouvidoria@csisaude.com.br</span></label>
+            <div class="preview mb-3" id="email-preview"></div>
+
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-csi" id="btn-mailto" type="button"><i class="bi bi-send me-2"></i>Abrir no aplicativo de e-mail</button>
+              <button class="btn btn-outline-csi" id="btn-copy" type="button"><i class="bi bi-clipboard-check me-2"></i>Copiar texto</button>
+            </div>
+            <p class="text-success fw-semibold small mt-3 mb-0" id="send-status" role="status"></p>
+            <p class="text-secondary small mt-1 mb-0">Se o e-mail não abrir automaticamente, copie o texto e cole em um e-mail novo para <strong>ouvidoria@csisaude.com.br</strong>.</p>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="row2">
-      <div class="field">
-        <label for="f-email">E-mail <span class="opt">(opcional)</span></label>
-        <input type="email" id="f-email" autocomplete="email" placeholder="voce@exemplo.com">
-      </div>
-      <div class="field">
-        <label for="f-unidade">Unidade da CSI <span class="opt">(opcional)</span></label>
-        <input type="text" id="f-unidade" placeholder="Ex.: Matriz, Filial, Pituba">
-      </div>
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+      <aside class="card card-csi mb-4">
+        <div class="card-body p-4">
+          <h2 class="h6 fw-bold text-uppercase text-secondary mb-3">Como cuidamos de você</h2>
+          <div class="care-item mb-3">
+            <span class="icon-bubble"><i class="bi bi-shield-lock"></i></span>
+            <div><strong class="d-block">Sigilo</strong><small class="text-secondary">Suas informações são tratadas com respeito e confidencialidade.</small></div>
+          </div>
+          <div class="care-item mb-3">
+            <span class="icon-bubble"><i class="bi bi-hash"></i></span>
+            <div><strong class="d-block">Protocolo</strong><small class="text-secondary">Um número único para você localizar sua manifestação quando quiser.</small></div>
+          </div>
+          <div class="care-item">
+            <span class="icon-bubble"><i class="bi bi-chat-heart"></i></span>
+            <div><strong class="d-block">Retorno</strong><small class="text-secondary">Nossa equipe lê cada mensagem e entra em contato com você.</small></div>
+          </div>
+        </div>
+      </aside>
+
+      <aside class="card card-csi">
+        <div class="card-body p-4">
+          <h2 class="h6 fw-bold text-uppercase text-secondary mb-3">Endereço da ouvidoria</h2>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
+            <input type="text" class="form-control" value="ouvidoria@csisaude.com.br" readonly aria-label="E-mail da ouvidoria">
+            <button class="btn btn-outline-csi px-3" type="button" id="btn-copy-addr" style="border-radius:0 .85rem .85rem 0;">Copiar</button>
+          </div>
+          <p class="small text-secondary mt-3 mb-0" id="addr-status" role="status"></p>
+        </div>
+      </aside>
     </div>
+  </div>
+</main>
 
-    <div class="field">
-      <label for="f-data">Data do ocorrido <span class="opt">(opcional)</span></label>
-      <input type="date" id="f-data">
+<footer class="site-footer py-4 mt-4">
+  <div class="container text-center">
+    <div class="fw-bold mb-1"><i class="bi bi-heart-pulse-fill me-1"></i> CSI · Clínica de Saúde e Imagem</div>
+    <div class="small">
+      <a href="https://wa.me/5571999803806"><i class="bi bi-whatsapp me-1"></i>(71) 99980-3806</a>
+      <span class="mx-2">·</span>
+      <a href="tel:+557131817666"><i class="bi bi-telephone me-1"></i>(71) 3181-7666</a>
     </div>
-
-    <div class="field">
-      <label for="f-desc">Descrição da reclamação *</label>
-      <textarea id="f-desc" placeholder="Descreva o que aconteceu, com o máximo de detalhes possível (data, local, pessoas envolvidas, etc.)."></textarea>
-    </div>
-
-    <p class="error-msg" id="form-error" role="alert"></p>
-
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-build" type="button">Montar e-mail da reclamação</button>
-      <button class="btn btn-ghost" id="btn-clear" type="button">Limpar formulário</button>
-    </div>
-
-    <div class="field" id="preview-wrap" hidden>
-      <label>Prévia do e-mail que será enviado para ouvidoria@csisaude.com.br</label>
-      <div class="preview" id="email-preview"></div>
-      <div class="btn-row" style="margin-top:4px;">
-        <button class="btn btn-primary" id="btn-mailto" type="button">Abrir no aplicativo de e-mail</button>
-        <button class="btn btn-ghost" id="btn-copy" type="button">Copiar texto da reclamação</button>
-      </div>
-      <p class="status" id="send-status"></p>
-      <p class="hint" style="margin-top:0;">Se o e-mail não abrir automaticamente, copie o texto acima e cole em um e-mail novo endereçado a <strong style="color:var(--fg);">ouvidoria@csisaude.com.br</strong>.</p>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-      Endereço da ouvidoria
-    </h2>
-    <div class="addr-chip">
-      ouvidoria@csisaude.com.br
-      <button type="button" id="btn-copy-addr">Copiar</button>
-    </div>
-  </section>
-
-  <details class="notes">
-    <summary>Sobre este protótipo e próximos passos</summary>
-    <ul>
-      <li><strong>É só front-end.</strong> Nada aqui é enviado a um servidor; o botão de e-mail apenas abre o aplicativo de e-mail já instalado no dispositivo da pessoa, via link <code>mailto:</code>.</li>
-      <li><strong>Limite do mailto.</strong> Em computadores sem um aplicativo de e-mail padrão configurado, o botão pode não abrir nada — por isso existe o botão de copiar o texto como alternativa.</li>
-      <li><strong>Para garantir entrega</strong> mesmo sem e-mail configurado no dispositivo, o próximo passo seria um pequeno backend (ex.: função serverless) que recebe o formulário e envia o e-mail pelo servidor.</li>
-    </ul>
-  </details>
-
-  <footer>
-    <span class="foot-name">CSI · Clínica de Saúde e Imagem</span>
-    <span class="foot-contact">WhatsApp (71) 99980-3806 · Telefone (71) 3181-7666</span>
-    <span class="foot-contact">Canal de ouvidoria — protótipo interno, não substitui os canais oficiais de atendimento.</span>
-  </footer>
-</div>
+  </div>
+</footer>
 
 <script>
 (function(){
@@ -394,45 +323,56 @@
 
   var MAILTO_ADDRESS = "ouvidoria@csisaude.com.br";
 
-  // ---- Complaint form ----
-  var elNome = document.getElementById("f-nome");
-  var elTel = document.getElementById("f-tel");
-  var elEmail = document.getElementById("f-email");
-  var elUnidade = document.getElementById("f-unidade");
-  var elData = document.getElementById("f-data");
-  var elDesc = document.getElementById("f-desc");
-  var formError = document.getElementById("form-error");
-  var previewWrap = document.getElementById("preview-wrap");
-  var previewBox = document.getElementById("email-preview");
-  var sendStatus = document.getElementById("send-status");
+  var $ = function(id){ return document.getElementById(id); };
+  var elNome = $("f-nome"), elTel = $("f-tel"), elEmail = $("f-email"),
+      elUnidade = $("f-unidade"), elData = $("f-data"), elDesc = $("f-desc");
+  var formError = $("form-error"), result = $("result"), previewBox = $("email-preview"),
+      sendStatus = $("send-status"), protocolBox = $("protocol-number");
 
-  var builtMailto = "";
-  var builtBody = "";
+  var protocol = "", builtMailto = "", builtBody = "";
+
+  // Protocolo no formato CSI-AAAAMMDD-XXXXXX (sem caracteres ambíguos: 0/O, 1/I)
+  function generateProtocol(){
+    var d = new Date();
+    var pad = function(n){ return String(n).padStart(2, "0"); };
+    var stamp = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate());
+    var alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    var bytes = new Uint32Array(6);
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    var code = "";
+    for(var i = 0; i < bytes.length; i++) code += alphabet[bytes[i] % alphabet.length];
+    return "CSI-" + stamp + "-" + code;
+  }
 
   function formatDate(iso){
     if(!iso) return "Não informada";
-    var parts = iso.split("-");
-    if(parts.length !== 3) return iso;
-    return parts[2] + "/" + parts[1] + "/" + parts[0];
+    var p = iso.split("-");
+    return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
+  }
+
+  function showError(msg){
+    formError.textContent = msg;
+    formError.classList.remove("d-none");
+    result.hidden = true;
   }
 
   function buildEmail(){
-    formError.textContent = "";
-    var nome = elNome.value.trim();
-    var tel = elTel.value.trim();
-    var email = elEmail.value.trim();
-    var unidade = elUnidade.value.trim();
-    var data = elData.value;
-    var desc = elDesc.value.trim();
+    formError.classList.add("d-none");
+    var nome = elNome.value.trim(), tel = elTel.value.trim(), email = elEmail.value.trim(),
+        unidade = elUnidade.value.trim(), data = elData.value, desc = elDesc.value.trim();
 
     if(!nome || !tel || !desc){
-      formError.textContent = "Preencha nome, telefone e a descrição da reclamação.";
-      previewWrap.hidden = true;
+      showError("Preencha nome, telefone e a descrição da manifestação.");
       return;
     }
 
-    var subject = "Reclamação - " + nome + " - CSI Saúde";
-    var bodyLines = [
+    // Mantém o mesmo protocolo enquanto o formulário não for limpo
+    if(!protocol) protocol = generateProtocol();
+
+    var subject = "[" + protocol + "] Reclamação - " + nome + " - CSI Saúde";
+    builtBody = [
+      "PROTOCOLO: " + protocol,
+      "",
       "Nome completo: " + nome,
       "Telefone/WhatsApp: " + tel,
       "E-mail para contato: " + (email || "Não informado"),
@@ -442,73 +382,72 @@
       "Descrição da reclamação:",
       desc,
       "",
-      "--- Enviado via canal de ouvidoria da CSI Saúde ---"
-    ];
-    builtBody = bodyLines.join("\n");
+      "--- Enviado via canal de ouvidoria da CSI Saúde ---",
+      "Guarde o protocolo " + protocol + " para consultar sua manifestação."
+    ].join("\n");
+
     builtMailto = "mailto:" + MAILTO_ADDRESS +
       "?subject=" + encodeURIComponent(subject) +
       "&body=" + encodeURIComponent(builtBody);
 
+    protocolBox.textContent = protocol;
     previewBox.textContent = "Para: " + MAILTO_ADDRESS + "\nAssunto: " + subject + "\n\n" + builtBody;
-    previewBox.classList.add("filled");
-    previewWrap.hidden = false;
     sendStatus.textContent = "";
+    result.hidden = false;
+    result.scrollIntoView({behavior: "smooth", block: "start"});
   }
-
-  document.getElementById("btn-build").addEventListener("click", buildEmail);
-
-  document.getElementById("btn-clear").addEventListener("click", function(){
-    elNome.value = ""; elTel.value = ""; elEmail.value = "";
-    elUnidade.value = ""; elData.value = ""; elDesc.value = "";
-    formError.textContent = "";
-    previewWrap.hidden = true;
-    sendStatus.textContent = "";
-  });
-
-  document.getElementById("btn-mailto").addEventListener("click", function(){
-    if(!builtMailto) return;
-    window.location.href = builtMailto;
-    sendStatus.textContent = "Abrindo seu aplicativo de e-mail…";
-  });
 
   function copyText(text, statusEl, okMessage){
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(function(){
+    function fallback(){
+      try{
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
         statusEl.textContent = okMessage;
-      }).catch(function(){
-        fallbackCopy(text, statusEl, okMessage);
-      });
+      }catch(e){
+        statusEl.textContent = "Não foi possível copiar automaticamente. Selecione o texto manualmente.";
+      }
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ statusEl.textContent = okMessage; }, fallback);
     }else{
-      fallbackCopy(text, statusEl, okMessage);
+      fallback();
     }
   }
 
-  function fallbackCopy(text, statusEl, okMessage){
-    try{
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.focus();
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      statusEl.textContent = okMessage;
-    }catch(e){
-      statusEl.textContent = "Não foi possível copiar automaticamente. Selecione o texto manualmente.";
-    }
-  }
+  $("btn-build").addEventListener("click", buildEmail);
 
-  document.getElementById("btn-copy").addEventListener("click", function(){
-    if(!builtBody) return;
-    copyText(builtBody, sendStatus, "Texto copiado — cole no seu e-mail.");
+  $("btn-clear").addEventListener("click", function(){
+    $("complaint-form").reset();
+    protocol = ""; builtMailto = ""; builtBody = "";
+    formError.classList.add("d-none");
+    result.hidden = true;
+    sendStatus.textContent = "";
   });
 
-  document.getElementById("btn-copy-addr").addEventListener("click", function(){
-    copyText(MAILTO_ADDRESS, sendStatus, "Endereço copiado.");
+  $("btn-mailto").addEventListener("click", function(){
+    if(!builtMailto) return;
+    window.location.href = builtMailto;
+    sendStatus.textContent = "Abrindo seu aplicativo de e-mail… Lembre-se de anotar o protocolo " + protocol + ".";
+  });
+
+  $("btn-copy").addEventListener("click", function(){
+    if(builtBody) copyText(builtBody, sendStatus, "Texto copiado — cole no seu e-mail.");
+  });
+
+  $("btn-copy-protocol").addEventListener("click", function(){
+    if(protocol) copyText(protocol, sendStatus, "Protocolo " + protocol + " copiado.");
+  });
+
+  $("btn-copy-addr").addEventListener("click", function(){
+    copyText(MAILTO_ADDRESS, $("addr-status"), "Endereço copiado.");
   });
 })();
 </script>
-
-</body></html>
+</body>
+</html>
